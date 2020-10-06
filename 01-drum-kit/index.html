@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div> -->
+  <div class="keys">
+    <div data-key="81" class="key">
+      <kbd>Q</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="87" class="key">
+      <kbd>W</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="69" class="key">
+      <kbd>E</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="82" class="key">
+      <kbd>R</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="84" class="key">
+      <kbd>T</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="89" class="key">
+      <kbd>Y</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="85" class="key">
+      <kbd>U</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="73" class="key">
+      <kbd>I</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="79" class="key">
+      <kbd>O</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="81" src="sounds/clap.wav"></audio>
+  <audio data-key="87" src="sounds/hihat.wav"></audio>
+  <audio data-key="69" src="sounds/kick.wav"></audio>
+  <audio data-key="82" src="sounds/openhat.wav"></audio>
+  <audio data-key="84" src="sounds/boom.wav"></audio>
+  <audio data-key="89" src="sounds/ride.wav"></audio>
+  <audio data-key="85" src="sounds/snare.wav"></audio>
+  <audio data-key="73" src="sounds/tom.wav"></audio>
+  <audio data-key="79" src="sounds/tink.wav"></audio>
+
+  <script>
+    function playSound(e) {
+      // template 模板字符串写法
+      // 将键盘按键与页面按钮对应起来 查看对应的键码
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+      const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+      if (!audio) return;
+      // 键盘按住不放时连续响起 而不是等播放完 每次播放前设置时间戳为0
+      // currentTime 属性设置或返回音频/视频播放的当前位置（以秒计）。 当设置该属性时，播放会跳跃到指定的位置。
+      audio.currentTime = 0;
+      audio.play();
+
+      key.classList.add("playing");
+      // key.classList.remove('playing');
+      // key.classList.toggle('playing');
+
+      const keys = document.querySelectorAll('.key');
+      // 当监听一个Node-list时（类数组），你必须循环遍历每个元素，而不能一起监听。
+      function removeTransition(e) {
+        // console.log(e);
+        if (e.propertyName !== 'transform') return; // skip it if it's other event
+        this.classList.remove('playing');
+      }
+
+      keys.forEach(key => {
+        key.addEventListener('transitionend', removeTransition)
+      });
+    }
+
+    window.addEventListener('keydown', playSound);
+  </script>
+
+
+</body>
+
+</html>
