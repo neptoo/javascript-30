@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+
+<body>
+
+
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
+    </div>
+  </div>
+
+
+  <style>
+    html {
+      background: #018DED url(https://images.pexels.com/photos/4177561/pexels-photo-4177561.jpeg?cs=tinysrgb&dpr=2&w=500&blur=30);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 16px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      /* transform: translateY(-3px); */
+      /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      background: black;
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      /* 让指针从12点开始走 */
+      transition: all .5s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+    }
+
+    .clock-face:after {
+      width: .6em;
+      height: .6em;
+      left: 50%;
+      top: 50%;
+      position: absolute;
+      display: block;
+      transform: translate(-50%, -50%);
+      content: '';
+      background-color: #a8c5d1;
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 2px rgba(0, 0, 0, 0.1),
+        0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hour-hand {
+      width: 40%;
+      height: 8px;
+      margin-top: -5px;
+      transition: all 3s;
+    }
+
+    .min-hand {
+      width: 45%;
+      height: 6px;
+      margin-top: -2.5px;
+      transition: all .1s cubic-bezier(0.9, 0.54, 0.26, 1.68);
+    }
+
+    .second-hand {
+      width: 50%;
+      height: 4px;
+      transition: all .05s cubic-bezier(0.9, 0.54, 0.26, 1.68);
+      background-color: #E66D26;
+    }
+  </style>
+
+  <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+
+    function setDate() {
+      const date = new Date();
+
+      const second = date.getSeconds();
+      const secondDegree = (second / 60) * 360 + 90;
+
+      const minute = date.getMinutes();
+      const minuteDegree = (minute / 60) * 360 + ((second / 60) / 60 * 360) + 90;
+
+      const hour = date.getHours();
+      const hourDegree = (hour / 12) * 360 + (minute / 60) / 12 * 360 + 90;
+
+      if (secondDegree === 90) secondHand.style.transition = 'all 0s';
+      else secondHand.style.transition = 'all 0.05s cubic-bezier(0.9, 0.54, 0.26, 1.68)';
+
+      if (minuteDegree === 90) minHand.style.transition = 'all 0s';
+      else minHand.style.transition = 'all 0.1s cubic-bezier(0.9, 0.54, 0.26, 1.68)';
+
+      secondHand.style.transform = `rotate(${secondDegree}deg)`;
+      minHand.style.transform = `rotate(${ minuteDegree }deg)`;
+      hourHand.style.transform = `rotate(${ hourDegree }deg)`;
+    }
+    setInterval(setDate, 1000);
+
+    // 解决办法2
+    // let secondDeg = 0,
+    //   minDeg = 0,
+    //   hourDeg = 0;
+
+    // function initDate() {
+    //   const date = new Date();
+    //   const second = date.getSeconds();
+    //   secondDeg = 90 + (second / 60) * 360;
+
+    //   const minute = date.getMinutes();
+    //   minDeg = (90 + (minute / 60) * 360) + ((second / 60) / 60) * 360;
+
+    //   const hour = date.getHours();
+    //   hourDeg = (90 + (hour / 12) * 360) + ((minute / 60) / 12) * 360 + (((second / 60) / 60) / 12) * 360;
+    // }
+
+    // function updateDate() {
+    //   secondDeg += (1 / 60) * 360;
+    //   secondHand.style.transform = `rotate(${ secondDeg}deg)`;
+    //   minDeg += ((1 / 60) / 60) * 360;
+    //   minHand.style.transform = `rotate(${ minDeg}deg)`;
+    //   hourDeg += (((1 / 60) / 60) / 12) * 360;
+    //   hourHand.style.transform = `rotate(${ hourDeg}deg)`;
+    // }
+
+    //  initDate();
+    // 只在页面第一次加载时 new 一次 Date 对象，此后每秒直接更新角度值
+    // 让这个角度值一直保持增长，也就不会出现逆时针回旋的问题了
+    // setInterval(updateDate, 1000);
+  </script>
+</body>
+
+</html>
