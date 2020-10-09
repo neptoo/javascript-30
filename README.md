@@ -2,9 +2,17 @@
 
 wesbos 的30天纯 JS 挑战：[javascript30-github](https://github.com/wesbos/JavaScript30)，另外每天学到的东西会记录在README.md文件中。
 
-## 个人练习记录
 
-Day1: [Drum-Kit 在线体验](https://neptoo.github.io/javascript-30/01-drum-kit/index.html)
+
+## 在线预览
+
+Day1: [Drum-Kit](https://neptoo.github.io/javascript-30/01-drum-kit/index.html)
+
+Day2: [Clock](https://neptoo.github.io/javascript-30/02-clock/index.html)
+
+
+
+## 个人笔记
 
 ### Day1 drum kit 纯JS模拟打鼓效果
 
@@ -13,6 +21,8 @@ Day1: [Drum-Kit 在线体验](https://neptoo.github.io/javascript-30/01-drum-kit
 [音频下载](https://freesound.org/)
 
 [键盘码](http://keycode.info/)
+
+
 
 ### Day2 clock 纯JS实现一个时钟
 
