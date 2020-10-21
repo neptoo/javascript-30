@@ -133,13 +133,14 @@
     });
     console.table(oldest);
 
-    // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
-    // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
-    // const category = document.querySelector(".mw-category");
-    // const links = Array.from(category.querySelectorAll("a")); // NodeList没有数组方法
-    // const de = links
-    //   .map(link => link.textContent)
-    //   .filter(streetName => streetName.includes('de'));
+    // 6. create a list of Books in Douban that contain 'de' anywhere in the name
+    // https://book.douban.com/people/gaobiedeying/collect
+    const links = Array.from(document.querySelectorAll(".info h2 a"));
+    const list = links
+      .map(link => link.innerText)
+      .filter(bookName => bookName.includes("de"));
+    console.log(list);
+    // NodeList没有数组方法 所以要先转化为数组
 
 
     // 7. sort Exercise
@@ -156,6 +157,14 @@
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car',
       'truck'
     ];
+    const transportation = data.reduce(function (obj, item) {
+      if (!obj[item]) {
+        obj[item] = 0;
+      }
+      obj[item]++;
+      return obj;
+    }, {}); // {track:0, car:0, ...}
+    console.log(transportation);
   </script>
 </body>
 
