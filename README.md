@@ -84,3 +84,65 @@ document.documentElement.style.setProperty(`--${thi.name}`, this.value + suffix)
 // ('--base', #A0BEEE);
 ```
 
+### Day4 Array 方法1
+
+```
+Filter the list of inventors for those who were born in the 1500's
+```
+
+
+
+```
+Give us an array of the inventors first and last names
+```
+
+
+
+```
+Sort the inventors by birthdate, oldest to youngest
+```
+
+
+
+```
+How many years did all the inventors live all together?
+```
+
+
+
+#### 综合
+
+```
+Create a list of Books in Douban that contain 'de' anywhere in the name
+```
+
+
+
+### Day5 flex可伸缩画廊
+
+Ⅰ.让图片均匀地占据空间：
+
+将`.panels` 设置为 `display: flex;`，设置 `.panel` 的属性为`flex:1;`
+
+Ⅱ.字母大写 `p{ text-transform: uppercase; }`
+
+Ⅲ.设置默认状态下首尾字母的状态和点击之后文字状态
+
+```css
+.panel>*:first-child {
+  transform: translateY(-100%);
+}
+
+.panel.open-active>*:first-child {
+  transform: translateY(0);
+}
+```
+
+Ⅳ.js部分
+
+获取所有`.panel`的元素，用`forEach`遍历`panel`
+
+给panel添加`click`监听事件（给触发的 DOM 元素添加样式，实现拉伸/压缩的效果)
+
+添加 `transitionend` 事件监听，编写调用的函数（添加/去掉样式，实现文字的飞入/飞出效果）
+
