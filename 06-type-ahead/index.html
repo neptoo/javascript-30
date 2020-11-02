@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>探索诗词 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="诗人 诗词 诗名">
+    <ul class="suggestions">
+      <li>输入关键词</li>
+      <li>或作者名</li>
+    </ul>
+  </form>
+  <script>
+    const poetries = [];
+    const endpoint =
+      'https://gist.githubusercontent.com/neptoo/786c9140bfeee90bf850c2f3316d979d/raw/2aaa48ee3fa6a915b77197b3413d78a51726ee42/TangPoetry.json';
+    fetch(endpoint)
+      .then(blob => blob.json())
+      .then(data => poetries.push(...data));  // 不加... 就会是[[1,2,3]]
+
+    function findMatch(wordToMatch, poetries){
+      return poetries.filter(poet => {
+        const regex = new RegExp(wordToMatch, 'gi');
+        const author = poet.detail_author.join('');
+        console.log(author);
+        return poet.detail_text.match(regex) || poet.title.match(regex) || author.match(regex);
+      })
+    }
+  </script>
+</body>
+
+</html>
