@@ -17,7 +17,7 @@ input {
 }
 
 .search-form {
-  max-width: 400px;
+  max-width: 700px;
   margin: 50px auto;
 }
 
@@ -66,10 +66,18 @@ input.search {
   background: linear-gradient(to top,  #ffffff 0%,#EFEFEF 100%);
 }
 
-span.population {
-  font-size: 15px;
+span.detail {
+  font-size: 20px;
+  text-align: center;
+}
+span.name {
+  font-size: .8em;
+  color: #7c8e94;
+  position: absolute;
+  right: 5px;
+  bottom: 2px;
 }
 
 .hl {
-  background: #ffc600;
+  background:hsla(193, 37%, 64%, 0.65);
 }

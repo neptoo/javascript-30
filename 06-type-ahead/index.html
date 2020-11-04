@@ -22,16 +22,40 @@
       'https://gist.githubusercontent.com/neptoo/786c9140bfeee90bf850c2f3316d979d/raw/2aaa48ee3fa6a915b77197b3413d78a51726ee42/TangPoetry.json';
     fetch(endpoint)
       .then(blob => blob.json())
-      .then(data => poetries.push(...data));  // 不加... 就会是[[1,2,3]]
+      .then(data => poetries.push(...data)); // 不加... 就会是[[1,2,3]]
 
-    function findMatch(wordToMatch, poetries){
+    function findMatch(wordToMatch, poetries) {
       return poetries.filter(poet => {
         const regex = new RegExp(wordToMatch, 'gi');
         const author = poet.detail_author.join('');
-        console.log(author);
+        // console.log(author);
         return poet.detail_text.match(regex) || poet.title.match(regex) || author.match(regex);
       })
     }
+
+    function displayMatch() {
+      // console.log(this.value);
+      const matchArray = findMatch(this.value, poetries);
+      // console.log(matchArray);
+      const regex = new RegExp(this.value, 'gi');
+      const html = matchArray.map(poet => {
+        const title = poet.title.replace(regex, `<span class="hl">${ this.value }</span>`)
+        const text = poet.detail_text.replace(regex, `<span class="hl">${ this.value }</span>`)
+        return `
+          <li>
+            <span class="detail">${text}</span>
+            <span class="name">${poet.detail_author[0]} <<${title}>></span>
+          </li>
+        `
+      }).join("");
+    
+      suggestions.innerHTML = html;
+    }
+
+    const searchInput = document.querySelector('.search');
+    const suggestions = document.querySelector('.suggestions');
+    searchInput.addEventListener('change', displayMatch);
+    searchInput.addEventListener('keyup', displayMatch);
   </script>
 </body>
 
