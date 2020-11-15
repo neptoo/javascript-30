@@ -146,3 +146,61 @@ Create a list of Books in Douban that contain 'de' anywhere in the name
 
 添加 `transitionend` 事件监听，编写调用的函数（添加/去掉样式，实现文字的飞入/飞出效果）
 
+
+
+### Day6 type ahead 联想词列表
+
+> 输入作者或者词语关键词，展示匹配到的古诗词
+
+①获取数据
+
+唐诗数据访问地址：https://gist.githubusercontent.com/neptoo/786c9140bfeee90bf850c2f3316d979d/raw/2aaa48ee3fa6a915b77197b3413d78a51726ee42/TangPoetry.json
+
+```js
+fetch(url)  // 获取Promise对象
+  .then(blob=>blob.json())   //解析JSON数据
+  .then(data => poetries.push(...data));  //存入数组
+```
+
+②查找匹配de函数
+
+```js
+function findMatch(wordToMatch, poetries) {
+  return poetries.filter(poet => {
+  // filter() 返回一个新的、由通过测试的元素组成的数组
+   const regex = new RegExp(wordToMatch, 'gi');
+      return poet.title.match(regex);
+   })
+}
+```
+
+③展示匹配内容de函数
+
+1. 获取匹配数据
+
+   > const matchArray = **findMatch**(this.value, poetries);  // 匹配数组
+   >
+   > const regex = new **RegExp**(this.value, 'gi');  //关键字
+
+2. 替换关键词放入高亮的标签
+
+   > const title = poet.title.**replace**(regex, `<span class="hlight">${ this.value }</span>`)
+
+3. 将匹配值的 HTML 标签放入 `<ul>` 中
+
+④绑定事件
+
+获取两个主要 HTML 元素（`<input>`，`<ul>`），给 `<input>` 添加事件监听（`change`, `keyup`）
+
+
+
+### Day8 html5 canvas 画布
+
+```js
+ctx.lineJoin = "round"; // 相连部分如何连接在一起 扇形拐角  || miter菱形(默认) || bevel矩形拐角
+```
+
+```js
+ctx.lineCap = "round"; //线段末端以圆形结束 || butt方形
+```
+
