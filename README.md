@@ -204,3 +204,19 @@ ctx.lineJoin = "round"; // 相连部分如何连接在一起 扇形拐角  || mi
 ctx.lineCap = "round"; //线段末端以圆形结束 || butt方形
 ```
 
+
+
+### Day10 按住 shift 实现 checkbox 多选
+
+获取所有的checkbox
+
+```js
+const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+```
+
+遍历并给每个checkbox添加事件
+
+```js
+checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+```
+
