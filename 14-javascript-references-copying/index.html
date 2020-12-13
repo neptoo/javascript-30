@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS Reference VS Copy</title>
+</head>
+
+<body>
+
+  <script>
+    // start with strings, numbers and booleans
+    let age = 24;
+    let age2 = age;
+    // console.log(`age is ${age}, age2 is ${age2}`);
+    age = 25;
+    // console.log(`Now age is ${age}, age2 is ${age2}`);
+    // 25, 24
+
+    let str = 'nept';
+    let str2 = str;
+    // console.log(str, str2);
+    str = 'neptoo';
+    // console.log(str, str2);
+
+    // Let's say we have an array
+    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+    // let teams1 = players;
+    // teams1[0]='Lux';
+    // 对复制的数组进行修改的时候，原数组也会变
+    // console.log(teams1, players);
+
+    // So, how do we fix this? We take a copy instead!
+    // one way
+    let teams2 = players.slice();
+    // teams2[0] = 'Alex';
+    // console.log(teams2, players);
+
+    // or create a new array and concat the old one in
+    let teams3 = [].concat(players);
+    // teams3[3] = 'Boston';
+    // console.log(teams3, players);
+
+    // or use the new ES6 Spread
+    let teams4 = [...players];
+    // teams4[2] = 'Heyiko';
+    // console.log(teams4, players);
+
+    let teams5 = Array.from(players);
+    // teams5[1] = 'coldddd';
+    // console.log(teams5, players);
+
+    // now when we update it, the original one isn't changed
+
+    // The same thing goes for objects, let's say we have a person object
+
+    // with Objects
+    const person = {
+      name: 'Wes Bos',
+      age: 80
+    };
+
+    // and think we make a copy:
+
+    // how do we take a copy instead?
+    // let captain1 = Object.assign({}, person, {
+    //   salary: 4000,
+    //   age: 18
+    // });
+    // console.log(captain1, person);
+
+    // We will hopefully soon see the object ...spread
+    // let captain2 = {...person};
+    // captain2.age = 8;
+    // console.log(captain2, person);
+
+    // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    const boss = {
+      name: 'Wes',
+      age: 24,
+      social: {
+        twitter: '@neptoo',
+        blog: 'cool nerd'
+      }
+    }
+    const dev = Object.assign({}, boss);
+    // dev.age = 10;
+    // dev.social.blog = 'emmmm';
+    // console.log(dev, boss);
+    // console.log(dev.social, boss.social);
+    // clone deep
+    const dev2 = JSON.parse(JSON.stringify(boss));
+    dev2.social.blog = 'hahahaha';
+    console.log(dev2.social, boss.social);
+  </script>
+
+</body>
+
+</html>
