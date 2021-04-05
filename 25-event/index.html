@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+  <style>
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+
+    div {
+      width: 100%;
+      padding: 100px;
+    }
+
+    .one {
+      background: thistle;
+    }
+
+    .two {
+      background: mistyrose;
+    }
+
+    .three {
+      background: coral;
+    }
+  </style>
+
+  <script>
+    const divs = document.querySelectorAll("div")
+
+    function logText(e) {
+      console.log(this.classList.value)
+    }
+    // divs.forEach(div => div.addEventListener('click', logText))
+    // 当点击最内层的 div 时，div 以及其外层的元素(three->two->one->body->document)也将监听到点击事件
+
+    // divs.forEach(div => div.addEventListener('click', logText, {
+    //   capture: true
+    // }))
+    // 点击内层div可以看到，事件的触发顺序为由外向内，即事件捕获阶段监听到事件  one->two->three
+
+    // function logText(e) {
+    //   console.log(this.classList.value)
+    //   e.stopPropagation();  // 停止冒泡
+    // }
+    // divs.forEach(div => div.addEventListener('click', logText))
+
+    divs.forEach(div => div.addEventListener('click', logText, {
+      capture: false,
+      once: true  //在被触发一次后自动删除监听器
+    }))
+
+  </script>
+</body>
+
+</html>
