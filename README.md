@@ -12,6 +12,8 @@ Day2: [Clock](https://neptoo.github.io/javascript-30/02-clock/index.html)
 
 Day3: [Update Photo Setting](https://neptoo.github.io/javascript-30/03-css-variables/index.html)
 
+
+
 ## 个人笔记
 
 ### Day1 drum kit 纯JS模拟打鼓效果
@@ -20,9 +22,51 @@ Day3: [Update Photo Setting](https://neptoo.github.io/javascript-30/03-css-varia
 
 [音频下载](https://freesound.org/)
 
-[键盘码](http://keycode.info/)
+[键盘码](http://keycode.info/)-每个按键都有一个对应的keyCode。
 
+关键点：按键后触发声音和改变画面上的样式。
 
+步骤分解：
+
+Q1：获取键码
+
+A1：
+
+```js
+document.querySelector(`audio[data-key] = "${e.keyCode}"`)
+```
+
+Q2：点击的键不在网页显示的键中，会报错
+
+A2：
+
+```js
+if(audio) audio.play()
+if(dom) dom.classList.add('playing')
+```
+
+Q3：快速点击一个键，让它连续播放
+
+A3：音频播放前，设置`currentTime`为0。
+
+Q4：如果一段动画中有多个属性，transitionend 事件会重复触发！
+
+A4：
+
+```js
+if(e.propertyName === 'transform'){
+  e.currentTarget.classList.remove('playing')
+}
+```
+
+思考点：
+
+- `const keys = Array.from(document.querySelectorAll('.key'))` 其中的Array.from是否可以省略？
+
+​    I：`querySelectorAll`返回的是一个NodeList，类数组。
+
+- HTML 中用`<kbd>`标签定义键盘上键入的文本。
+- `getElementsByClassName` 和 `querySelectorAll`：前者是获取动态集合，后者是静态。静态就是只要你不重新获取一次就不会变。
 
 ### Day2 clock 纯JS实现一个时钟
 
@@ -32,13 +76,9 @@ Day3: [Update Photo Setting](https://neptoo.github.io/javascript-30/03-css-varia
 transform-origin: 100%; // 默认是50%
 ```
 
-
-
 2.指针旋转到12点的时候 会闪回跳跃的bug ，原因是指针是90° - 96°- 102° - ... 
 
 解决办法1： 将特殊点的transition过程瞬间完成
-
-
 
 解决办法2：只在页面第一次加载时 new 一次 Date 对象，此后每秒直接更新角度值。
 
