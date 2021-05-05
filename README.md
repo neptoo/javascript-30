@@ -68,15 +68,11 @@ if(e.propertyName === 'transform'){
 - HTML 中用`<kbd>`标签定义键盘上键入的文本。
 - `getElementsByClassName` 和 `querySelectorAll`：前者是获取动态集合，后者是静态。静态就是只要你不重新获取一次就不会变。
 
+
+
 ### Day2 clock 纯JS实现一个时钟
 
-1.调整指针旋转的轴点 transform-origin
-
-```css
-transform-origin: 100%; // 默认是50%
-```
-
-2.指针旋转到12点的时候 会闪回跳跃的bug ，原因是指针是90° - 96°- 102° - ... 
+Q: 指针旋转到12点的时候 会闪回跳跃的bug ，原因是指针是90° - 96°- 102° - ... 
 
 解决办法1： 将特殊点的transition过程瞬间完成
 
@@ -84,7 +80,74 @@ transform-origin: 100%; // 默认是50%
 
 该方法存在的小问题：角度值可能存在有效范围，页面一直跑的话，数值就能无限大了应该会有问题。
 
+- 指针
 
+  ```css
+  .second-hand::after{
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 10px;
+    height: 40%;
+    background-color: red;
+    transform: translate(-50%, 0%);
+    /* transform: rotate(0deg); 增加度数实现秒针的顺时针旋转 */
+  }
+  ```
+
+- 指针圆点
+
+  ```css
+  .clock-face::after{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    content: "";
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    background-color: #fff;
+    transform: translate(-50%, -50%);
+  }
+  ```
+
+- 时分秒换算
+
+  ```js
+  // 表盘1格（1小时）是30° 1小格（1分钟）是6°
+  let secDeg = date.getSeconds() * 6
+  let minDeg = date.getMinutes() * 6 + date.getSeconds() * 6 / 60
+  let hourDeg = date.getHours() * 30 + date.getMinutes() * 30 / 60
+  ```
+
+- 计时器选择setInterval、setTimeout、requestAnimationFrame
+
+  ```js
+  // setInterval 隔...执行一次 再隔...再执行  按照间隔时间持续执行
+  setInterval(setClock, 1000)
+  // 持续动作 比如时钟或者轮播图
+  
+  // setTimeout 延迟 执行一次
+  function timeoutHandler(){
+    setClock()
+    setTimeout(timeoutHandler, 1000)
+  }
+  setTimeout(timeoutHandler, 1000)
+  // 如果直接调用setClock 动一次就不会再动了
+  
+  //requestAnimationFrame
+  function animationHandler(){
+    setClock()
+    window.requestAnimationFrame(animationHandler)
+  }
+  window.requestAnimationFrame(animationHandler);
+  // 根据屏幕设备性能去调用函数更新画面 适用于canvas动画
+  ```
+
+  
 
 ### Day3 用JS更新CSS variable
 
