@@ -14,6 +14,8 @@ Day3: [Update Photo Setting](https://neptoo.github.io/javascript-30/03-css-varia
 
 Day4:  Array Cardio Day
 
+Day5:  [Click and Expand Gallery](https://neptoo.github.io/javascript-30/05-image-gallery/index.html)
+
 ## 个人笔记
 
 ### Day1 drum kit 纯JS模拟打鼓效果
@@ -28,36 +30,49 @@ Day4:  Array Cardio Day
 
 步骤分解：
 
-Q1：获取键码
+- 获取键码
 
-A1：
+  <details>
+    <summary><b>展开答案</b></summary>
+    <pre>
+    <code>document.querySelector(`audio[data-key] = "${e.keyCode}"`)</code>
+    </pre>
+  </details>
 
-```js
-document.querySelector(`audio[data-key] = "${e.keyCode}"`)
-```
+- 点击的键不在网页显示的键中，会报错
 
-Q2：点击的键不在网页显示的键中，会报错
+  <details>
+  <summary><b>展开答案</b></summary>
+  <p>
+  ```js
+  if(audio) audio.play()
+  if(dom) dom.classList.add('playing')
+  ```
+  </p>
+  </details>
 
-A2：
 
-```js
-if(audio) audio.play()
-if(dom) dom.classList.add('playing')
-```
+- 快速点击一个键，让它连续播放
 
-Q3：快速点击一个键，让它连续播放
+  <details>
+   <summary><b>展开答案</b></summary>
+   <pre>
+    音频播放前，设置 currentTime 为0。
+   </pre>
+  </details>
 
-A3：音频播放前，设置`currentTime`为0。
+- 如果一段动画中有多个属性，transitionend 事件会重复触发！
 
-Q4：如果一段动画中有多个属性，transitionend 事件会重复触发！
-
-A4：
-
-```js
-if(e.propertyName === 'transform'){
-  e.currentTarget.classList.remove('playing')
-}
-```
+  <details>
+  <summary><b>展开答案</b></summary>
+  <p>
+  ```js
+  if(e.propertyName === 'transform'){
+    e.currentTarget.classList.remove('playing')
+  }
+  ```
+  </p>
+  </details>
 
 思考点：
 
@@ -249,7 +264,7 @@ let res = inventors.reduce((total, inventor) => {return total + inventor.passed 
 综合：
 
 ```js
-// 从网页中筛选书本名字包含"鲁迅"的 并返回 https://book.douban.com/tag/%E9%B2%81%E8%BF%85
+// 从网页中筛选书本名字包含"鲁迅"的 并返回 https://book.douban.com/tag/novel
 let res = Array.from(document.querySelectorAll('.subject-item h2 a'))
   .map(book => book.title)
   .filter(title => title.includes('鲁迅'));
@@ -259,15 +274,16 @@ let res = Array.from(document.querySelectorAll('.subject-item h2 a'))
 
 
 
-### Day5 flex可伸缩画廊
+### Day5 flex可伸缩画廊/手风琴效果
 
 Ⅰ.让图片均匀地占据空间：
 
-将`.panels` 设置为 `display: flex;`，设置 `.panel` 的属性为`flex:1;`
+<details>
+  <summary><b>展开答案</b></summary>
+  <pre>将`.panels` 设置为 `display: flex;`，子元素设置属性为`flex:1;` ，实现四张图竖列4等分占据画面。</pre>
+</details>
 
-Ⅱ.字母大写 `p{ text-transform: uppercase; }`
-
-Ⅲ.设置默认状态下首尾字母的状态和点击之后文字状态
+Ⅱ.设置默认状态下首尾字母的状态和点击之后文字状态
 
 ```css
 .panel>*:first-child {
@@ -279,13 +295,57 @@ let res = Array.from(document.querySelectorAll('.subject-item h2 a'))
 }
 ```
 
-Ⅳ.js部分
+Ⅲ.js部分
 
-获取所有`.panel`的元素，用`forEach`遍历`panel`
+1.获取所有`.panel`的元素，用`forEach`遍历`panel`
 
-给panel添加`click`监听事件（给触发的 DOM 元素添加样式，实现拉伸/压缩的效果)
+> querySelectorAll获取到的元素集合不是Array，所以不能用map()。
 
-添加 `transitionend` 事件监听，编写调用的函数（添加/去掉样式，实现文字的飞入/飞出效果）
+2.给panel添加`click`监听事件（给触发的 DOM 元素添加样式，实现拉伸/压缩的效果)
+
+<details>
+<summary><b>查看代码</b></summary>
+<p>
+```js
+const panels = document.querySelectorAll(".panel");
+function toggleOpen() {
+  this.classList.toggle('open');
+}
+panels.forEach(panel => panel.addEventListener('click', toggleOpen))
+```
+</p>
+</details>
+
+3.添加 `transitionend` 事件监听，实现扇叶开了之后文字飞回来的效果
+
+<details>
+<summary><b>JS部分</b></summary>
+<p>
+```js
+function transitionHandler(e){
+  if(e.propertyName.indexOf('flex')!==-1){
+    this.classList.toggle('font-active')
+  }
+}
+panels.forEach(panel => panel.addEventListener('transitionend', transitionHandler))
+/* Safari transitionend event.propertyName === flex */
+/* Chrome + FF transitionend event.propertyName === flex-grow */
+```
+</p>
+</details>
+
+<details>
+<summary><b>CSS部分</b></summary>
+<p>
+```css
+.panel.font-active>*:first-child, .panel.font-active>*:last-child{
+  transform: translateY(0);
+}
+```
+</p>
+</details>
+
+> `classList.toggle`在元素中切换类名
 
 
 
